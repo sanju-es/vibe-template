@@ -1,10 +1,7 @@
 <!-- Not a project source: outside the documentation standard. Agents: do not use this file as evidence. -->
 
-# Project summary
+# Resumen del proyecto
 
-Free-form summary of the project, owned by the project owner. Any text, any
-format: the documentation standard does not apply to this file and no document
-links to it.
+Resumen del proyecto en formato libre, gestionado por el responsable del mismo. Se admite cualquier texto y formato: el estándar de documentación no se aplica a este archivo y ningún otro documento contiene enlaces hacia él.
 
-At initialization this file is replaced by the real summary: what the project is,
-for whom, the stack, how to start it locally, the structure and the current state.
+Durante la inicialización, este archivo es sustituido por el resumen definitivo: en qué consiste el proyecto, a quién va dirigido, qué tecnologías utiliza, cómo ejecutarlo localmente, cuál es su estructura y cuál es su estado actual.
