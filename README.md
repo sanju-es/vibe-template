@@ -2,6 +2,6 @@
 
 # Resumen del proyecto
 
-Resumen del proyecto en formato libre, gestionado por el responsable del mismo. Se admite cualquier texto y formato: el estándar de documentación no se aplica a este archivo y ningún otro documento contiene enlaces hacia él.
+Mi punto de partida para el vibe coding con IA: una plantilla viva que utilizo y perfecciono para definir cada proyecto, establecer roles y responsabilidades, configurar su estructura, automatizar su inicialización y preparar su despliegue desde cero.
 
-Durante la inicialización, este archivo es sustituido por el resumen definitivo: en qué consiste el proyecto, a quién va dirigido, qué tecnologías utiliza, cómo ejecutarlo localmente, cuál es su estructura y cuál es su estado actual.
+**Descargo de responsabilidad:** Esta plantilla es una herramienta de referencia y aceleración del desarrollo. Los resultados generados mediante IA deben ser revisados, validados y probados antes de su utilización o despliegue en entornos reales. La responsabilidad sobre las decisiones técnicas, la seguridad, el cumplimiento normativo y la puesta en producción corresponde a quien desarrolla y despliega el proyecto.
