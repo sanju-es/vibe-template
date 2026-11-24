@@ -106,7 +106,7 @@ the included documentation standard; write facts, never invented ones.
 | `PROJECT_STATE.md` | Rewrite §1–§9 with the answers. Keep the control comment on line 1 exactly as it is. |
 | `README.md` | Rewrite as a free-form project summary: what the project is, stack, local startup, structure and current state. No front block, no numbered slots. |
 | `AGENTS.md` | Delete the bootstrap gate section entirely and fill §2–§3 with the chosen stack, gates and languages. |
-| `opencode.json` | Remove `default_agent`. Adjust permissions and the agent list to the generated set. |
+| `opencode.json` | Remove `default_agent` and prove it with a search that returns nothing. Adjust permissions and the agent list to the generated set. |
 | `docs/ARCHITECTURE.md` | Fill §1–§10 with the layers, the coupling, the data model sketch, the conventions and the testing strategy. |
 | `docs/DECISIONS.md` | Replace the placeholder rows and record `D-01…D-NN`, dated with today, one per architectural choice, with context and reason. |
 | `docs/api-contract.md` | Set the title to `# <Project> API contract — v0.1`, the base path, the cross-cutting conventions and the error table. Keep the change history with its first row, dated the initialization date. |
@@ -200,18 +200,38 @@ This stage is not optional and is not delegated to the owner.
 ## Stage 6 — final purge and handover
 
 1. Set `.opencode/bootstrap/state.json` to `{"format": 1, "status": "done"}`.
-2. Delete `.opencode/bootstrap/`, `.opencode/agents/bootstrap.md`,
-   `.opencode/skills/bootstrap-wizard/`, `.opencode/commands/inicializar-proyecto.md`,
-   `.opencode/commands/initialize-project.md` and `scripts/sanitize-check.mjs`.
-3. Run `grep -rniE "plantilla|template|scaffold|boilerplate" .` excluding
-   `.git`, `node_modules` and `tracker.html`: the only allowed match is the
-   control comment on line 1 of `PROJECT_STATE.md`.
+
+2. Run the whole purge and its verification in **one** shell invocation, in this
+   order, chained so the call stops at the first failure:
+
+   1. `node scripts/sanitize-check.mjs --terms "<terms from block E question 4>"`.
+   2. `node scripts/check-docs.mjs --strict`.
+   3. Delete `.opencode/bootstrap/`, `.opencode/skills/bootstrap-wizard/`,
+      `.opencode/commands/inicializar-proyecto.md`,
+      `.opencode/commands/initialize-project.md` and `scripts/sanitize-check.mjs`.
+   4. Run the term scan — `grep -rniE "plantilla|template|scaffold|boilerplate" .`
+      excluding `.git`, `node_modules`, `tracker.html` and
+      `.opencode/agents/bootstrap.md` — and accept exactly two lines: the control
+      comment on line 1 of `PROJECT_STATE.md` and the `CONTROL_LINE` constant of
+      `scripts/check-docs.mjs`, which the gate needs to verify G-21.
+   5. Delete `.opencode/agents/bootstrap.md` **last**.
+
+   Deleting `.opencode/agents/bootstrap.md` invalidates the agent that is running
+   the session. The two gates and the term scan run before it, so a finding still
+   leaves a session able to fix it; after it, the run writes the report and calls
+   nothing else.
+
+3. If a tool call is rejected anyway, retry that same call once, never twice. If it
+   is rejected again, stop and ask the owner to reopen the session. A follow-up
+   the owner asks for in a later turn runs under the default agent, outside this
+   run.
 4. If the owner chose versioning in block D, propose `git init` plus the first
    commit with explicit paths. Never reuse a `.git` directory that came with the
    copy.
 5. Report in at most fifteen lines: project name, type, stack, generated agents
-   and skills, the two script results, the files that were removed, the control
-   comment kept, the visual tracker and the next step — the analysis of module 1.
+   and skills, the two script results, the term scan, the files that were removed,
+   the control comment kept, the visual tracker and the next step — the analysis
+   of module 1.
    Include one sentence that `tracker.html` sits in the root, that Chrome or Edge
    opens it after picking the project folder, and that it shows the documentation
    visually without writing to it.

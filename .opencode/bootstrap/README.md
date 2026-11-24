@@ -47,5 +47,7 @@ bootstrap agent enforces this through `opencode.json` (`default_agent`), the
 ## What it removes
 
 `.opencode/bootstrap/`, the bootstrap agent, the bootstrap skill, the two
-initialization commands and `scripts/sanitize-check.mjs`. The second pass proves
-the removal before the handover.
+initialization commands and `scripts/sanitize-check.mjs`. The removal invalidates
+the agent that runs the session, so it happens inside the final shell invocation
+and the handover report is the only thing that follows. The second pass proves the
+removal before the handover.

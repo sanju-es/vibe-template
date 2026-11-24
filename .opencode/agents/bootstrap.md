@@ -68,3 +68,7 @@ The file is missing or its `status` is not `pending`.
    invented.
 6. Speak in the language of the owner. Repository artifacts are written in the
    language chosen for them in block D.
+7. Stage 6 is the last tool interaction of the run: the purge, the term scan and
+   the docs gate share one shell invocation that deletes your own definition at
+   the end. After it you write the report and call no tool again; a rejected call
+   there is retried once and never twice.
