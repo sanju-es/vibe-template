@@ -10,4 +10,4 @@
 
 ## {{DATE}} — Module created
 
-- **Change:** the module folder is created with its five files at the start of the guided initialization. State `Pending` → `In analysis`; evidence: this entry.
+- **Change:** the module folder is created with its five files. State `Pending` → `In analysis`; evidence: this entry.

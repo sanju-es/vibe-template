@@ -30,8 +30,8 @@ the guided initialization completes.
 
 Any other first message receives a single line asking for the trigger. The
 bootstrap agent enforces this through `opencode.json` (`default_agent`), the
-`.opencode/agents/bootstrap.md` prompt and `AGENTS.md` §0, so the gate survives
-the loss of any one of them.
+`.opencode/agents/bootstrap.md` prompt and the bootstrap gate section of
+`AGENTS.md`, so the gate survives the loss of any one of them.
 
 ## What the initialization leaves behind
 
@@ -40,6 +40,8 @@ the loss of any one of them.
 - The module 0 container and the first functional module folder.
 - Project agents and skills derived from the chosen stack.
 - `scripts/check-docs.mjs` as the documentation gate.
+- `tracker.html` in the root: the visual reader of the project documentation,
+  opened in Chrome or Edge after picking the project folder.
 - The control comment on line 1 of `PROJECT_STATE.md`.
 
 ## What it removes

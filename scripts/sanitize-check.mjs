@@ -37,6 +37,8 @@ const SKIP_FILES = new Set([
   '.opencode/commands/inicializar-proyecto.md',
   '.opencode/commands/initialize-project.md',
   'scripts/sanitize-check.mjs',
+  // Compiled viewer: a third-party build, not project content.
+  'tracker.html',
 ])
 const SKIP_PREFIXES = [
   '.opencode/bootstrap/',

@@ -5,7 +5,7 @@
 > **Canonical for:** documentation findings and their status.
 > **Do not duplicate:** the rule they violate (`DOC-STANDARD.md`).
 
-**Last update:** 2026-11-16
+**Last update:** 2026-11-24
 
 One row per finding, ordered by identifier; the rule identifier is cited so the
 finding survives a rewrite of the prose.
@@ -16,7 +16,7 @@ finding survives a rewrite of the prose.
 
 | ID | Date | Type | Description | Origin | Priority | Status |
 |---|---|---|---|---|---|---|
-| DOC-01 | 2026-11-16 | docs | Register every table of the skeletons in `DOC-STANDARD.md` §4.1 so T-03 reaches them | docs-auditor audit of 2026-11-16 | low | new |
+| — | — | — | no entries | — | — | — |
 
 ## 2. States
 

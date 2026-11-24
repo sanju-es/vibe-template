@@ -18,9 +18,7 @@ Not recorded: the requirements arrive with the analysis and never before it.
 
 ## 2. Functional requirements
 
-### {{FAMILY}} (FR-{{FAMILY}})
-
-- `FR-{{FAMILY}}-01` — not recorded.
+- `FR-01` — not recorded.
 
 ## 3. Business rules
 

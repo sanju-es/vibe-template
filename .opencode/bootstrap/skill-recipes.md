@@ -50,6 +50,30 @@ with the layer and names when to use it.
   convention.
 - Seeds are idempotent and never overwrite owner data.
 
+## API service only (no interface)
+
+- Transport parses and writes, service owns the rules; no handler holds a query
+  or a business rule.
+- Every route resolves the caller before the handler and declares its permission
+  in the contract.
+- One error envelope and one code per cause; a new code enters the contract
+  before the code exists.
+- Tests at the route level for status and payload, and at the service level for
+  every rule.
+- The contract is the only surface: no interface, no design token and no locale.
+
+## Command-line tool or library
+
+- One entry point; the commands, the flags and the exit codes are the public
+  contract and change with a recorded decision.
+- Data on stdout, messages on stderr, a non-zero exit on failure; never a silent
+  failure.
+- No interactive prompt in a library; a tool asks only when the owner approved
+  the interaction.
+- Standard library first; one justified dependency at a time, with the reason
+  recorded.
+- Tests call the public entry point and assert the exit code and the output.
+
 ## Secure coding (always generated)
 
 - Server-side authorisation on every protected route; hiding UI is not a control.

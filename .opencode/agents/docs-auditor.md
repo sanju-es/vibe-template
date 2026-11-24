@@ -34,8 +34,8 @@ every document in the scope of `docs/DOC-STANDARD.md` §1; a root document that 
 audit only the markdown files changed since that commit. Read every file you were
 given; do not sample.
 
-**Never open:** `.env*`, `data/`, `node_modules/`, build output or binary assets.
-They are not documentation.
+**Never open:** `.env*`, `data/`, `node_modules/`, `tracker.html`, build output or
+binary assets. They are not documentation.
 
 ## Rulebook
 

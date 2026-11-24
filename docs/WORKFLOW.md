@@ -5,7 +5,7 @@
 > **Canonical for:** the per-module cycle, the module life cycle, change management, versioning and documentation maintenance.
 > **Do not duplicate:** the form (`DOC-STANDARD.md`) and the decisions (`DECISIONS.md`).
 
-**Last update:** 2026-11-16
+**Last update:** 2026-11-24
 
 The workflow is a cycle of approved increments: nothing is implemented before a
 proposal exists and nothing is claimed without evidence.
@@ -43,7 +43,7 @@ proposal exists and nothing is claimed without evidence.
 
 ## 5. Version control and commits
 
-- Versioning follows the decision recorded in `DECISIONS.md`; this section states the mechanics only.
+- Versioning is decided at initialization and recorded in `DECISIONS.md`; this section states the mechanics only.
 - **One version = one milestone** with substantial changes: a module closure, a major feature, an architectural or database change. The tag is placed on the milestone commit.
 - **Commits are made per task or per approved phase**, each one grouping the code and the documentation updated in that task. Documentation is never left out of the commit that implements its change.
 - One repository, one agent session at a time. Parallel work uses separate worktrees.

@@ -76,8 +76,9 @@ explanations.
 ### Block E — agents and skills
 
 1. Confirm the proposed set, derived from blocks B and C: a backend skill, a
-   frontend skill, a database skill, `secure-coding`, and the three audit
-   subagents. Say which ones do not apply.
+   frontend skill, a database skill, an API-only or command-line skill when the
+   stack has that layer, `secure-coding`, and the three audit subagents. Say
+   which ones do not apply.
 2. Any domain skill the project needs from day one (for example payments, file
    ingestion, geographic data, reporting). Free text or `none`.
 3. Gate strictness: blocking audits at module closure (recommended) · advisory
@@ -107,30 +108,53 @@ the included documentation standard; write facts, never invented ones.
 | `AGENTS.md` | Delete the bootstrap gate section entirely and fill §2–§3 with the chosen stack, gates and languages. |
 | `opencode.json` | Remove `default_agent`. Adjust permissions and the agent list to the generated set. |
 | `docs/ARCHITECTURE.md` | Fill §1–§10 with the layers, the coupling, the data model sketch, the conventions and the testing strategy. |
-| `docs/DECISIONS.md` | Add `D-01…D-NN`, dated with today, one per architectural choice, with context and reason. |
-| `docs/api-contract.md` | Set the title to `# <Project> API contract — v0.1`, the base path, the cross-cutting conventions and the error table. Keep the change history with its first row. |
+| `docs/DECISIONS.md` | Replace the placeholder rows and record `D-01…D-NN`, dated with today, one per architectural choice, with context and reason. |
+| `docs/api-contract.md` | Set the title to `# <Project> API contract — v0.1`, the base path, the cross-cutting conventions and the error table. Keep the change history with its first row, dated the initialization date. |
 | `docs/WORKFLOW.md` | Keep the cycle chosen in block D; adjust versioning, ports and gate commands. |
 | `docs/DOC-STANDARD.md` | Set the title and remove vocabulary that the chosen stack does not use. |
-| `docs/GLOSSARY.md` | Seed the terms of the chosen stack and domain; leave the rest for later modules. |
-| `docs/RELEASES.md` | Empty release table; the first row arrives with the first tag. |
-| `docs/SECURITY-BACKLOG.md` | Keep §1 as the implemented baseline, empty, and the closing slot. |
+| `docs/GLOSSARY.md` | Replace the seed rows with the terms of the chosen stack and domain; leave the rest for later modules. |
+| `docs/RELEASES.md` | Empty release table with `—` in `Contract`; the first row arrives with the first tag. |
+| `docs/SECURITY-BACKLOG.md` | Keep §1 and §2 as explicit absences and fill them only with facts the answers support. |
 | `docs/DOCUMENTATION-BACKLOG.md` | Empty entries table with its vocabularies. |
-| `docs/modules/00-core/` | Fill the shared-platform scope for the chosen stack. |
+| `docs/modules/00-core/` | Rewrite the scope, the `CR-NN` invariants, §9, `BACKLOG.md` and `CHANGELOG.md` for the chosen stack. |
 | `docs/modules/01-<slug>/` | Create the five files from `.opencode/bootstrap/module-templates/`, with the module name and the first module scope. |
 | `.env.example` | Create only if the stack has configuration; one line per variable, no secret. |
 | `.gitignore` | Adjust to the chosen stack; never remove the environment and secret entries. |
 
 Then generate the project agents and skills:
 
-- `.opencode/agents/quality-gate.md` — adapt the checklist to the real commands
-  of the chosen stack.
+- `.opencode/agents/quality-gate.md` — compose the checklist from the blocks of
+  the layers present, with the real commands of the chosen stack.
 - `.opencode/agents/security-auditor.md` — keep it only if block B has an
   authentication surface.
 - `.opencode/agents/docs-auditor.md` — keep as included.
-- `.opencode/skills/<layer>-conventions/SKILL.md` — one per layer in block C,
-  using `.opencode/bootstrap/skill-recipes.md` as the outline: read first, rules,
+- `.opencode/skills/<layer>-conventions/SKILL.md` — one per layer present, using
+  `.opencode/bootstrap/skill-recipes.md` as the outline: read first, rules,
   verification, output.
 - Remove any generated skill whose layer does not exist.
+
+Then finish the content:
+
+- Include the versioning and artifact-language choices of block D in `D-01…D-NN`.
+- Set every `**Last update:**`, every `**Status:**` date, the first row of
+  `docs/api-contract.md` §4 and the first entry of
+  `docs/modules/00-core/CHANGELOG.md` to the initialization date.
+- Rewrite `docs/modules/00-core/` so that no invariant, item or entry of the
+  starting point survives.
+- Name in `AGENTS.md` §3 the skills actually generated and delete the rows of
+  layers that do not exist.
+- Compose `.opencode/agents/quality-gate.md` from the blocks of the layers
+  present: build and tests always; contract, data store, interface and
+  accessibility only when the project has that layer. Never keep a block for a
+  layer that does not exist.
+- Adapt the layer nouns of `docs/WORKFLOW.md` §2, `AGENTS.md` §2 and
+  `docs/ARCHITECTURE.md` §1 to the project type; a command-line or
+  interface-only project inherits no backend, endpoint or screen wording.
+- Replace every `{{...}}` marker of the module templates; the module changelog
+  never mentions the initialization.
+- In `README.md`, add one line that opens `tracker.html` in Chrome or Edge and
+  explains that it reads `PROJECT_STATE.md` and `docs/` to show the
+  documentation visually, and that it is a generated viewer never edited by hand.
 
 Do not create source code, packages, containers or test files: the first module
 delivers them after its own approved proposal.
@@ -140,7 +164,7 @@ delivers them after its own approved proposal.
 Remove the starting point, in this order:
 
 1. Every placeholder: `not recorded` stays only where the fact is genuinely
-   unknown; `<NN>`, `<name>`, `<project>` and similar markers disappear.
+   unknown; `<NN>`, `<name>`, `<project>`, `{{...}}` and similar markers disappear.
 2. Every wording that describes a starting point, a template, a previous attempt,
    a foreign author, a foreign host or a foreign module.
 3. Every reference to an identifier, tag, port, account or path that the answers
@@ -149,6 +173,8 @@ Remove the starting point, in this order:
 5. Do not delete the audit tooling yet.
 6. No governed document links to the project summary, and the summary opens with
    `<!-- Not a project source: outside the documentation standard. Agents: do not use this file as evidence. -->`.
+7. No delivered document describes the initialization as a future event or names
+   it as the origin of the files.
 
 ## Stage 5 — automatic second pass
 
@@ -158,14 +184,18 @@ This stage is not optional and is not delegated to the owner.
    The command is read-only. Zero findings is the only acceptable result.
 2. `node scripts/check-docs.mjs --strict`. Zero blocking findings is the only
    acceptable result.
-3. Launch the `docs-auditor` subagent with the input `all`. It reads every
+3. `grep -rnE "\{\{|guided initialization"` excluding `.git`, `node_modules`
+   and `tracker.html`. Zero matches is the only acceptable result.
+4. `grep -rn "2026-11-16"` excluding `.git` and `tracker.html`. The only
+   matches are the rows of `docs/DOC-STANDARD.md` §13.
+5. Launch the `docs-auditor` subagent with the input `all`. It reads every
    `.md` and reports stale content, foreign content, contradictions,
    placeholders, orphans and rule violations. Wait for its report.
-4. Fix every blocking finding and every advisory finding that costs one edit.
-   Then rerun steps 1 and 2, and rerun the auditor in delta mode if the fixes
+6. Fix every blocking finding and every advisory finding that costs one edit.
+   Then rerun steps 1 to 4, and rerun the auditor in delta mode if the fixes
    renamed sections or touched more than two files.
-5. Read the final output of both scripts and paste the counts in the report.
-   Never claim a pass without the literal output.
+7. Read the final output of the scripts and greps and paste the counts in the
+   report. Never claim a pass without the literal output.
 
 ## Stage 6 — final purge and handover
 
@@ -174,14 +204,17 @@ This stage is not optional and is not delegated to the owner.
    `.opencode/skills/bootstrap-wizard/`, `.opencode/commands/inicializar-proyecto.md`,
    `.opencode/commands/initialize-project.md` and `scripts/sanitize-check.mjs`.
 3. Run `grep -rniE "plantilla|template|scaffold|boilerplate" .` excluding
-   `.git` and `node_modules`: the only allowed match is the control comment on
-   line 1 of `PROJECT_STATE.md`.
+   `.git`, `node_modules` and `tracker.html`: the only allowed match is the
+   control comment on line 1 of `PROJECT_STATE.md`.
 4. If the owner chose versioning in block D, propose `git init` plus the first
    commit with explicit paths. Never reuse a `.git` directory that came with the
    copy.
 5. Report in at most fifteen lines: project name, type, stack, generated agents
    and skills, the two script results, the files that were removed, the control
-   comment kept, and the next step — the analysis of module 1.
+   comment kept, the visual tracker and the next step — the analysis of module 1.
+   Include one sentence that `tracker.html` sits in the root, that Chrome or Edge
+   opens it after picking the project folder, and that it shows the documentation
+   visually without writing to it.
 
 ## Stop conditions
 

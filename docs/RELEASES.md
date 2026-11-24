@@ -5,7 +5,7 @@
 > **Canonical for:** the release summary keyed by tag.
 > **Do not duplicate:** the dated module history (`docs/modules/*/CHANGELOG.md`).
 
-**Last update:** 2026-11-16
+**Last update:** 2026-11-24
 
 A release row is written when the tag is placed; the module history keeps the
 detail of what changed inside it.
@@ -16,4 +16,4 @@ detail of what changed inside it.
 
 | Tag | Date | Modules | Migrations | Contract | Upgrade / rollback |
 |---|---|---|---|---|---|
-| — | — | no release yet | — | `v0.1` | — |
+| — | — | no release yet | — | — | — |

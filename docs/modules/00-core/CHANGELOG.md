@@ -6,8 +6,6 @@
 > **Do not duplicate:** the current invariants (`MODULE.md` §4).
 
 **History:** append-only
-**Last update:** 2026-11-16
+**Last update:** 2026-11-24
 
-## 2026-11-16 — Container created
-
-- **Change:** module 0 exists with the boundary rule, four invariants and its four files. State `Active (permanent)`; evidence: this entry.
+No entry recorded yet.

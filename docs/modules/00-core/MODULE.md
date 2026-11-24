@@ -6,7 +6,7 @@
 > **Do not duplicate:** architecture (`../../ARCHITECTURE.md`), decisions (`../../DECISIONS.md`), wire (`../../api-contract.md`).
 
 **Status:** `Active (permanent)` (2026-11-16)
-**Last update:** 2026-11-16
+**Last update:** 2026-11-24
 
 Module 0 holds the work that belongs to no functional module. It never closes as
 `Tested` and does not consume the active-module slot.
@@ -43,10 +43,10 @@ impact analysis.
 
 | ID | Invariant | Source of truth |
 |---|---|---|
-| `CR-01` | The API contract is the only coupling between backend and frontend | [`api-contract.md`](../../api-contract.md) |
-| `CR-02` | Every authenticated route resolves the session before the handler | [`ARCHITECTURE.md`](../../ARCHITECTURE.md) |
-| `CR-03` | A fact has one home and the others link to it | [`DOC-STANDARD.md`](../../DOC-STANDARD.md) |
-| `CR-04` | Nothing is marked implemented without recorded evidence | [`WORKFLOW.md`](../../WORKFLOW.md) |
+| `CR-01` | The written contract is the only coupling between the parts that exchange data | [`api-contract.md`](../../api-contract.md) |
+| `CR-02` | A fact has one home and the others link to it | [`DOC-STANDARD.md`](../../DOC-STANDARD.md) |
+| `CR-03` | Nothing is marked implemented without recorded evidence | [`WORKFLOW.md`](../../WORKFLOW.md) |
+| `CR-04` | No code exists before the owner approves the proposal | [`WORKFLOW.md`](../../WORKFLOW.md) §2 |
 
 ## 5. Lifecycle and state
 
@@ -70,7 +70,7 @@ status.
 
 ## 9. Next step
 
-The initialization records the shared layer of the chosen stack here.
+not recorded.
 
 ## 10. Module-specific notes
 

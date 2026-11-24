@@ -1,12 +1,12 @@
-# Documentation standard — v1.2
+# Documentation standard — v1.3
 
 > **Purpose:** single contract for the form of every `.md` in the repository.
 > **Read when:** writing or reviewing documentation, or when the documentation gate fails.
 > **Canonical for:** file skeletons, table columns, vocabularies, identifier notation and the machine checks.
 > **Do not duplicate:** the process (`WORKFLOW.md`) and the facts themselves.
 
-**Status:** `approved` (2026-11-16)
-**Last update:** 2026-11-16
+**Status:** `approved` (2026-11-24)
+**Last update:** 2026-11-24
 
 One skeleton, one table registry and one vocabulary set apply to every document.
 A rule is either checked by `scripts/check-docs.mjs` or reviewed by the documentation auditor at closure.
@@ -15,7 +15,7 @@ A rule is either checked by `scripts/check-docs.mjs` or reviewed by the document
 
 ## 1. Scope, authority and language
 
-- **G-01 — Scope.** Applies to every `.md` under `docs/**` and to the root files registered in §7.1. A root `.md` outside that registry is outside the standard: no rule of this document applies to it and it is never a source. Tooling configuration under `.opencode/**` is out of scope.
+- **G-01 — Scope.** Applies to every `.md` under `docs/**` and to the root files registered in §7.1. A root `.md` outside that registry is outside the standard: no rule of this document applies to it and it is never a source. A root `.html` tool is not a document: no rule of this document applies to it. Tooling configuration under `.opencode/**` is out of scope.
 - **G-02 — Precedence.** `AGENTS.md` (process) → this standard (form) → file-local notes. A file note never contradicts this standard.
 - **G-03 — Keywords.** **must** = gate failure; **should** = advisory, justified in the same task when skipped; **may** = free choice.
 - **G-04 — Language.** Every artifact uses the language chosen at initialization. A quoted owner statement keeps its original language; the control comment of G-21 keeps its fixed form.
@@ -154,7 +154,7 @@ Module 0 uses `MODULE.md`, `TECHNICAL.md`, `BACKLOG.md` and `CHANGELOG.md`, with
 
 ### 7.3 Plans and annexes
 
-A plan in `docs/plans/` carries `**Status:**` with a V-05 token, `**Decision:**` from `approved` onwards and `**History:** append-only`. An annex needs the H1, the front block and `**Last update:**` only, and never holds a fact that belongs to its module.
+A plan in `docs/plans/` carries `**Status:**` with a V-05 token, `**Decision:**` from `approved` onwards and `**History:** append-only`. An annex lives in `docs/modules/<NN>-<slug>/ASSETS/` and needs the H1, the front block and `**Last update:**` only; the numbered slots and the table registry do not apply to it, and it never holds a fact that belongs to its module.
 
 ## 8. Lifecycle coverage
 
@@ -213,13 +213,13 @@ The document stays readable as a document; machine needs are met with stable mar
 | E-12 | no `####` heading, no second separator, and none in `AGENTS.md` | G-13, G-14 | must |
 | E-13 | a relative link targets a document outside the documentation scope of §1 | G-01, G-18 | must |
 
-**Scope.** E-02 skips `CHANGELOG.md`, `docs/plans/*` and the bootstrap configuration. E-03 skips an annex. E-07 reads `docs/modules/*`. The gate reads `docs/**` and the root files of §7.1 only: a root document outside the registry is never opened, never checked and never reachable.
+**Scope.** E-02 skips `CHANGELOG.md` and `docs/plans/*`. E-04 and E-06 skip an annex. E-07 reads `docs/modules/*`. The gate reads `docs/**` and the root files of §7.1 only: a root document outside the registry is never opened, never checked and never reachable.
 
 **Remediation loop.** Script first, auditor second. Structure before meaning: a semantic review on top of a broken structure produces findings that the next fix invalidates.
 
 ## 11. Migration
 
-_not applicable_ — a new project starts with this standard at v1.2.
+_not applicable_ — a new project starts with this standard at v1.3.
 
 ## 12. Governance
 
@@ -235,3 +235,4 @@ _not applicable_ — a new project starts with this standard at v1.2.
 | 2026-11-16 | v1.0 | First version: universal skeleton, table registry, vocabularies, identifier rules, file registry, agent contract and the checks that the gate runs. |
 | 2026-11-16 | v1.1 | The scope is the file registry: a root document outside it leaves the standard and the gate. New check E-13 rejects a link to a document outside the scope. |
 | 2026-11-16 | v1.2 | Traceability of the enforcement table: the control comment becomes G-21, E-07 cites its skeletons, E-12 covers `AGENTS.md` and E-03 states where an H1 row exists. `L` joins the identifier prefixes and G-04 exempts the fixed control comment. |
+| 2026-11-24 | v1.3 | The annex is defined as `docs/modules/<NN>-<slug>/ASSETS/*.md`; E-04 and E-06 skip it and E-02 no longer skips it. A root `.html` tool leaves the standard. |

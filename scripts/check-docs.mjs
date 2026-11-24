@@ -62,7 +62,7 @@ const governed = files
 const GOVERNED = new Set(governed)
 
 const content = new Map()
-for (const file of governed) content.set(file, readFileSync(join(ROOT, file), 'utf8').split(/\r?\n/))
+for (const file of governed) content.set(file, readFileSync(join(ROOT, file), 'utf8').replace(/^\uFEFF/, '').split(/\r?\n/))
 
 const slug = (text) =>
   text
@@ -125,7 +125,6 @@ const H1_RULES = [
 const isHistory = (f) => base(f) === 'CHANGELOG.md' || f.includes('/plans/')
 const isAnnex = (f) => f.includes('/ASSETS/')
 const isIndex = (f) => base(f) === 'AGENTS.md' && !f.includes('/')
-const isModuleFile = (f) => /^docs\/modules\/\d{2}-[^/]+\//.test(f)
 
 for (const file of governed) {
   const f = rel(file)
@@ -152,7 +151,7 @@ for (const file of governed) {
 
   // E-02 — front block.
   const bare = (line) => line.replace(/^\s*>\s?/, '')
-  if (!isHistory(f) && !isAnnex(f)) {
+  if (!isHistory(f)) {
     for (const key of ['**Purpose:**', '**Read when:**', '**Canonical for:**', '**Do not duplicate:**']) {
       if (!lines.some((l) => bare(l).startsWith(key))) {
         push(f, 1, 'AG-02', 'must', `front block misses ${key}`)
@@ -172,21 +171,24 @@ for (const file of governed) {
   })
 
   // E-04 and E-12 — ascending slots, no fourth level, one separator.
-  let lastSlot = 0
-  let separators = 0
-  visible.forEach((line, i) => {
-    if (line === null) return
-    const slot = /^## (\d+)\./.exec(line)
-    if (slot) {
-      const n = Number(slot[1])
-      if (n <= lastSlot) push(f, i + 1, 'G-13', 'must', `slot ${n} does not ascend`)
-      lastSlot = n
-    }
-    if (/^####\s/.test(line)) push(f, i + 1, 'G-13', 'must', 'fourth-level headings are forbidden')
-    if (line.trim() === '---') separators += 1
-  })
-  if (separators > 1) push(f, 1, 'G-14', 'must', `${separators} separators; at most one is allowed`)
-  if (isIndex(f) && separators > 0) push(f, 1, 'G-14', 'must', 'AGENTS.md carries no separator')
+  // An annex carries only the H1, the front block and the date (§7.3).
+  if (!isAnnex(f)) {
+    let lastSlot = 0
+    let separators = 0
+    visible.forEach((line, i) => {
+      if (line === null) return
+      const slot = /^## (\d+)\./.exec(line)
+      if (slot) {
+        const n = Number(slot[1])
+        if (n <= lastSlot) push(f, i + 1, 'G-13', 'must', `slot ${n} does not ascend`)
+        lastSlot = n
+      }
+      if (/^####\s/.test(line)) push(f, i + 1, 'G-13', 'must', 'fourth-level headings are forbidden')
+      if (line.trim() === '---') separators += 1
+    })
+    if (separators > 1) push(f, 1, 'G-14', 'must', `${separators} separators; at most one is allowed`)
+    if (isIndex(f) && separators > 0) push(f, 1, 'G-14', 'must', 'AGENTS.md carries no separator')
+  }
 
   // E-05 — no placeholder marker.
   visible.forEach((line, i) => {
@@ -195,25 +197,27 @@ for (const file of governed) {
     if (/\b(TODO|TBD|FIXME)\b/.test(text)) push(f, i + 1, 'AG-08', 'must', 'placeholder marker')
   })
 
-  // E-06 — table shape.
-  let table = null
-  visible.forEach((line, i) => {
-    if (line === null) return
-    const isRow = /^\s*\|.*\|\s*$/.test(line)
-    if (!isRow) {
-      table = null
-      return
-    }
-    const cells = line.trim().slice(1, -1).split(/(?<!\\)\|/)
-    if (!table) {
-      table = { columns: cells.length, start: i + 1 }
-      return
-    }
-    if (cells.length !== table.columns) {
-      push(f, i + 1, 'T-01', 'must', `row has ${cells.length} cells, header has ${table.columns}`)
-    }
-    if (cells.some((c) => c.trim() === '')) push(f, i + 1, 'T-02', 'must', 'empty cell; write — instead')
-  })
+  // E-06 — table shape. The table registry does not apply to an annex.
+  if (!isAnnex(f)) {
+    let table = null
+    visible.forEach((line, i) => {
+      if (line === null) return
+      const isRow = /^\s*\|.*\|\s*$/.test(line)
+      if (!isRow) {
+        table = null
+        return
+      }
+      const cells = line.trim().slice(1, -1).split(/(?<!\\)\|/)
+      if (!table) {
+        table = { columns: cells.length, start: i + 1 }
+        return
+      }
+      if (cells.length !== table.columns) {
+        push(f, i + 1, 'T-01', 'must', `row has ${cells.length} cells, header has ${table.columns}`)
+      }
+      if (cells.some((c) => c.trim() === '')) push(f, i + 1, 'T-02', 'must', 'empty cell; write — instead')
+    })
+  }
 
   // E-09 and E-01 — link form and resolution.
   visible.forEach((line, i) => {
