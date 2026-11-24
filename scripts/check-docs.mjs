@@ -26,7 +26,7 @@ const SKIP_DIRS = new Set([
   '.venv', '__pycache__', 'coverage', 'data', '.idea', '.vscode',
 ])
 
-const CONTROL_LINE = '<!-- # Proyecto iniciado con plantilla sanju v2 -->'
+const CONTROL_LINE = '<!-- # Proyecto iniciado con plantilla sanju v2 — https://github.com/sanju-es -->'
 
 const findings = []
 const push = (file, line, rule, severity, message) =>

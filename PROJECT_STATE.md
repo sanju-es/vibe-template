@@ -1,4 +1,4 @@
-<!-- # Proyecto iniciado con plantilla sanju v2 -->
+<!-- # Proyecto iniciado con plantilla sanju v2 — https://github.com/sanju-es -->
 # PROJECT_STATE.md
 
 > **Purpose:** project index and current global state.

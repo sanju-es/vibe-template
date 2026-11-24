@@ -23,7 +23,7 @@ const ownerTerms = termsIndex >= 0 && ARGS[termsIndex + 1]
   ? ARGS[termsIndex + 1].split(',').map((t) => t.trim()).filter(Boolean)
   : []
 
-const CONTROL_LINE = 'Proyecto iniciado con plantilla sanju v2'
+const CONTROL_LINE = 'Proyecto iniciado con plantilla sanju v2 — https://github.com/sanju-es'
 
 const SKIP_DIRS = new Set([
   '.git', 'node_modules', 'dist', 'build', 'bin', 'vendor', '.venv',
