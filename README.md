@@ -14,6 +14,8 @@ El repositorio incluye `tracker.html`: mi visualizador HTML del estado del proye
 
 **Importante:** si la carpeta contiene más de un proyecto creado con esta plantilla, el tracker los detecta todos y muestra el estado de cada uno, no solo el del que abriste.
 
+Para actualizarlo a la última versión publicada: `node scripts/update-tracker.mjs`. Añade `--check` para comprobar sin descargar nada.
+
 ## Cómo se usa esta plantilla
 
 1. **Copia el repositorio** en una carpeta con el nombre del proyecto.

@@ -25,6 +25,10 @@ const ownerTerms = termsIndex >= 0 && ARGS[termsIndex + 1]
 
 const CONTROL_LINE = 'Proyecto iniciado con plantilla sanju v2 — https://github.com/sanju-es'
 
+// The tracker updater names its distribution repository by design; that single
+// line is exempt, the rest of the file is scanned like any other.
+const TRACKER_SOURCE = "const REPO = 'sanju-es/vibe-tracker-public'"
+
 const SKIP_DIRS = new Set([
   '.git', 'node_modules', 'dist', 'build', 'bin', 'vendor', '.venv',
   '__pycache__', 'coverage', 'data', 'assets', '.idea', '.vscode',
@@ -104,7 +108,7 @@ const findings = []
 for (const file of walk(ROOT)) {
   const lines = readFileSync(join(ROOT, file), 'utf8').split(/\r?\n/)
   lines.forEach((line, i) => {
-    if (line.includes(CONTROL_LINE)) return
+    if (line.includes(CONTROL_LINE) || line.includes(TRACKER_SOURCE)) return
     // Inline code spans and fenced content are examples, not project content.
     const text = line.replace(/`[^`]*`/g, ' ')
     for (const [re, label] of PATTERNS) {

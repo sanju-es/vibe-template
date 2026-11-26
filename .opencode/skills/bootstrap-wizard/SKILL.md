@@ -77,6 +77,9 @@ explanations.
    URL and the branch to track. Never propose an address taken from another
    repository and never assume the configured global identity belongs to the
    owner.
+6. Whether to download the newest published build of the visual tracker into
+   `tracker.html` (recommended: yes). The download is verified and never blocks
+   the run: an unreachable source leaves the shipped file in place.
 
 ### Block E — agents and skills
 
@@ -96,8 +99,8 @@ explanations.
 
 Write the answers to `.opencode/bootstrap/state.json` under `plan`, as one object
 per block, and show a summary of at most twelve lines: name, type, stack,
-modules, generated agents and skills, purge terms given and, when a remote was
-chosen, the commit identity and the remote URL.
+modules, generated agents and skills, purge terms given, whether the tracker is
+downloaded and, when a remote was chosen, the commit identity and the remote URL.
 
 Ask one question: `confirm`, or the corrections. Write nothing else until the
 owner answers `confirm`.
@@ -254,10 +257,17 @@ This stage is not optional and is not delegated to the owner.
    4. After the commit, run `node scripts/check-identity.mjs` and
       `git log -1 --format='%an <%ae>'`. Zero findings is the only acceptable
       result; paste both outputs in the report.
-5. Report in at most fifteen lines: project name, type, stack, generated agents
+5. If the owner accepted the tracker download in block D question 6, run
+   `node scripts/update-tracker.mjs` and paste its literal output. Exit code 0 is
+   the only acceptable result. On exit code 2 the source is unreachable: keep the
+   shipped file, say so in the report and never retry more than once. A mismatch
+   in the checksum or in the version is a failure of the download, not of the
+   project: keep the shipped file and report it.
+
+6. Report in at most fifteen lines: project name, type, stack, generated agents
    and skills, the two script results, the term scan, the files that were removed,
-   the control comment kept, the commit identity verified, the visual tracker and
-   the next step — the analysis of module 1.
+   the control comment kept, the commit identity verified, the tracker version,
+   and the next step — the analysis of module 1.
    Include one sentence that `tracker.html` sits in the root, that Chrome or Edge
    opens it after picking the project folder, and that it shows the documentation
    visually without writing to it.
