@@ -37,7 +37,8 @@ const SKIP_FILES = new Set([
   '.opencode/commands/inicializar-proyecto.md',
   '.opencode/commands/initialize-project.md',
   'scripts/sanitize-check.mjs',
-  // Compiled viewer: a third-party build, not project content.
+  // Compiled viewer: this repository's own build artifact; its strings come
+  // from the source build, not from this scan.
   'tracker.html',
 ])
 const SKIP_PREFIXES = [
@@ -52,10 +53,12 @@ const EXTENSIONS = new Set([
   '.example', '.env',
 ])
 
+const VOCABULARY = 'starting-point vocabulary'
+
 const PATTERNS = [
-  [/\bplantilla\b/i, 'starting-point vocabulary'],
-  [/\bsanju\b/i, 'starting-point vocabulary'],
-  [/\btemplate\b/i, 'starting-point vocabulary'],
+  [/\bplantilla\b/i, VOCABULARY],
+  [/\bsanju\b/i, VOCABULARY],
+  [/\btemplate\b/i, VOCABULARY],
   [/\bscaffold(ed|ing)?\b/i, 'starting-point vocabulary'],
   [/\bboilerplate\b/i, 'starting-point vocabulary'],
   [/\bcopied from\b/i, 'copied content'],
@@ -105,6 +108,8 @@ for (const file of walk(ROOT)) {
     // Inline code spans and fenced content are examples, not project content.
     const text = line.replace(/`[^`]*`/g, ' ')
     for (const [re, label] of PATTERNS) {
+      // The template repository names itself as a starting point in its README.
+      if (file === 'README.md' && label === VOCABULARY) continue
       const m = re.exec(text)
       if (m) findings.push({ file, line: i + 1, label, match: m[0].slice(0, 80) })
     }
