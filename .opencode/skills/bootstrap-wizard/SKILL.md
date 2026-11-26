@@ -224,7 +224,8 @@ This stage is not optional and is not delegated to the owner.
    2. `node scripts/check-docs.mjs --strict`.
    3. Delete `.opencode/bootstrap/`, `.opencode/skills/bootstrap-wizard/`,
       `.opencode/commands/inicializar-proyecto.md`,
-      `.opencode/commands/initialize-project.md` and `scripts/sanitize-check.mjs`.
+      `.opencode/commands/initialize-project.md`,
+      `.opencode/commands/modo-editar.md` and `scripts/sanitize-check.mjs`.
    4. Run the term scan — `grep -rniE "plantilla|template|scaffold|boilerplate" .`
       excluding `.git`, `node_modules`, `tracker.html` and
       `.opencode/agents/bootstrap.md` — and accept exactly two lines: the control
