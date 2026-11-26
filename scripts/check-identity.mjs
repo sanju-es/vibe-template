@@ -3,7 +3,8 @@
  * Commit identity check.
  *
  * Verifies that every author and committer in the history uses the identity
- * agreed at initialization, and that no purge term reaches the metadata.
+ * agreed at initialization, that every annotated tag uses it too, and that no
+ * purge term reaches the metadata.
  *
  * Usage:
  *   node scripts/check-identity.mjs
@@ -112,6 +113,32 @@ for (const entry of termHits.values()) {
   findings.push(
     `${entry.role} ${entry.name} <${entry.email}> in ${entry.commits} ${plural} — purge term "${entry.term}"`
   )
+}
+
+// An annotated tag carries a tagger identity, which is published with the tag.
+// `for-each-ref` does not expand %x09, so the atoms are separated by a pipe.
+let rawTags = ''
+try {
+  rawTags = git('for-each-ref', '--format=%(refname:short)|%(taggername)|%(taggeremail)', 'refs/tags')
+} catch {
+  rawTags = ''
+}
+
+for (const line of rawTags.split(/\r?\n/).filter(Boolean)) {
+  const [tag, taggerName, taggerRaw] = line.split('|')
+  const taggerEmail = (taggerRaw ?? '').replace(/[<>]/g, '').trim()
+  if (!taggerEmail) continue
+
+  if (taggerEmail.toLowerCase() !== expectedEmail) {
+    findings.push(`tag ${tag} ${taggerName} <${taggerEmail}> — not the agreed identity <${expectedEmail}>`)
+  }
+
+  const haystack = `${taggerName} ${taggerEmail}`.toLowerCase()
+  for (const term of terms) {
+    if (haystack.includes(term.toLowerCase())) {
+      findings.push(`tag ${tag} ${taggerName} <${taggerEmail}> — purge term "${term}"`)
+    }
+  }
 }
 
 for (const f of findings) console.log(f)

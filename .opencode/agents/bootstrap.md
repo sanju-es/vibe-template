@@ -78,7 +78,13 @@ mode. The mode lasts the session and never writes to `state.json`.
 - Before closing a task, run `node scripts/sanitize-check.mjs`,
   `node scripts/check-docs.mjs --strict` and `node scripts/check-identity.mjs`.
   All three must pass; paste the literal output.
-- Commit with explicit paths and only when the owner asks. Never push unprompted.
+- When the owner asks to publish a version, run
+  `node scripts/release-version.mjs --bump <major|minor|patch> --expect "<email>"`
+  with the identity agreed for this repository: `--version` for the first tag,
+  `--dry-run` before the real one. Paste the literal output. The script pushes
+  the branch with that single tag; never run `git push --tags`.
+- Commit with explicit paths and only when the owner asks. Never push unprompted,
+  except through the release script when the owner asked for a release.
 
 ## Rules for the whole run
 
