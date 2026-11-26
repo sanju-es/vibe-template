@@ -59,6 +59,11 @@ Input: the module or task being closed and the list of changed files.
 - No file outside the approved module or task.
 - No new dependency, refactor or behaviour without a recorded decision.
 
+### G. Commit identity
+
+- `node scripts/check-identity.mjs` reports zero findings.
+- Every commit of the task uses the identity agreed at initialization.
+
 ## Rules
 
 - Read-only by default. Do not edit, format or fix anything unless explicitly instructed.

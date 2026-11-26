@@ -5,7 +5,7 @@
 > **Canonical for:** the onboarding order, the immediate rules and the routing of skills and audits.
 > **Do not duplicate:** the process (`docs/WORKFLOW.md`), the form (`docs/DOC-STANDARD.md`) and the state (`PROJECT_STATE.md`).
 
-**Last update:** 2026-11-16
+**Last update:** 2026-11-26
 
 ## Bootstrap gate — mandatory, overrides every other rule
 
@@ -34,6 +34,7 @@ The repository has not been initialized yet. The state lives in `.opencode/boots
 - Update the affected documentation **in the same task**.
 - After closing a module, wait for the owner to choose the next one.
 - **Staging:** commit with explicit paths (`git add <file>…`); never `git add -A` or `git add .`. Check `git status` first and never stage a file outside the task.
+- **Identity:** commits use the identity agreed at initialization and configured per repository; never commit with another author, and never write a commit address into the documentation.
 - One agent session per repository at a time; parallel work uses separate worktrees.
 
 ## 3. Quality routing

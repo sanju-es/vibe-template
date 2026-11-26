@@ -72,6 +72,11 @@ explanations.
    interface.
 4. Versioning: local Git only (recommended) · remote included; branch model;
    whether milestones get tags.
+5. Only when the answer to 4 includes a remote: the commit author name and email
+   as literal values, or `global` to inherit the configured identity; the remote
+   URL and the branch to track. Never propose an address taken from another
+   repository and never assume the configured global identity belongs to the
+   owner.
 
 ### Block E — agents and skills
 
@@ -91,7 +96,8 @@ explanations.
 
 Write the answers to `.opencode/bootstrap/state.json` under `plan`, as one object
 per block, and show a summary of at most twelve lines: name, type, stack,
-modules, generated agents and skills, purge terms given.
+modules, generated agents and skills, purge terms given and, when a remote was
+chosen, the commit identity and the remote URL.
 
 Ask one question: `confirm`, or the corrections. Write nothing else until the
 owner answers `confirm`.
@@ -105,7 +111,7 @@ the included documentation standard; write facts, never invented ones.
 |---|---|
 | `PROJECT_STATE.md` | Rewrite §1–§9 with the answers. Keep the control comment on line 1 exactly as it is. |
 | `README.md` | Rewrite as a free-form project summary: what the project is, stack, local startup, structure and current state. No front block, no numbered slots. |
-| `AGENTS.md` | Delete the bootstrap gate section entirely and fill §2–§3 with the chosen stack, gates and languages. |
+| `AGENTS.md` | Delete the bootstrap gate section entirely and fill §2–§3 with the chosen stack, gates, languages and the commit-identity rule. |
 | `opencode.json` | Remove `default_agent` and prove it with a search that returns nothing. Adjust permissions and the agent list to the generated set. |
 | `docs/ARCHITECTURE.md` | Fill §1–§10 with the layers, the coupling, the data model sketch, the conventions and the testing strategy. |
 | `docs/DECISIONS.md` | Replace the placeholder rows and record `D-01…D-NN`, dated with today, one per architectural choice, with context and reason. |
@@ -124,7 +130,9 @@ the included documentation standard; write facts, never invented ones.
 Then generate the project agents and skills:
 
 - `.opencode/agents/quality-gate.md` — compose the checklist from the blocks of
-  the layers present, with the real commands of the chosen stack.
+  the layers present, with the real commands of the chosen stack. Include the
+  commit-identity check (`node scripts/check-identity.mjs`) in every
+  composition, whatever the layers.
 - `.opencode/agents/security-auditor.md` — keep it only if block B has an
   authentication surface.
 - `.opencode/agents/docs-auditor.md` — keep as included.
@@ -136,6 +144,11 @@ Then generate the project agents and skills:
 Then finish the content:
 
 - Include the versioning and artifact-language choices of block D in `D-01…D-NN`.
+- Record the commit identity as a decision: it is configured per repository in
+  `.git/config`. Never transcribe the address into `DECISIONS.md`,
+  `PROJECT_STATE.md` or any other document.
+- `PROJECT_STATE.md` §2: the `Versioning` row states the model and the remote
+  host, never the commit address.
 - Set every `**Last update:**`, every `**Status:**` date, the first row of
   `docs/api-contract.md` §4 and the first entry of
   `docs/modules/00-core/CHANGELOG.md` to the initialization date.
@@ -227,11 +240,24 @@ This stage is not optional and is not delegated to the owner.
    run.
 4. If the owner chose versioning in block D, propose `git init` plus the first
    commit with explicit paths. Never reuse a `.git` directory that came with the
-   copy.
+   copy. Before committing:
+
+   1. Write the identity confirmed in block D question 5 into the repository
+      with `git config --local user.name "<name>"` and
+      `git config --local user.email "<email>"`. Skip both only when the owner
+      answered `global`.
+   2. Read them back with `git config --local --get user.name` and
+      `git config --local --get user.email` and show the literal output.
+   3. Stop and ask the owner when no identity is configured, when the email
+      differs from the one confirmed, or when the email or the name matches a
+      purge term from block E question 4.
+   4. After the commit, run `node scripts/check-identity.mjs` and
+      `git log -1 --format='%an <%ae>'`. Zero findings is the only acceptable
+      result; paste both outputs in the report.
 5. Report in at most fifteen lines: project name, type, stack, generated agents
    and skills, the two script results, the term scan, the files that were removed,
-   the control comment kept, the visual tracker and the next step — the analysis
-   of module 1.
+   the control comment kept, the commit identity verified, the visual tracker and
+   the next step — the analysis of module 1.
    Include one sentence that `tracker.html` sits in the root, that Chrome or Edge
    opens it after picking the project folder, and that it shows the documentation
    visually without writing to it.
@@ -241,5 +267,6 @@ This stage is not optional and is not delegated to the owner.
 Stop and ask the owner when: an answer contradicts a previous one; the chosen
 stack has no skill recipe and the owner must describe the conventions; a file
 named in stage 3 does not exist; a script reports a blocking finding that the
-available information cannot fix; or the folder still carries the name of the
-starting point and the owner has not acknowledged it.
+available information cannot fix; the identity check reports a commit that is
+not the agreed one; or the folder still carries the name of the starting point
+and the owner has not acknowledged it.
